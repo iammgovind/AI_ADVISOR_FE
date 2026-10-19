@@ -9,6 +9,7 @@ const links = [
   { to: '/goals', label: '🏆 Goals' },
   { to: '/investments', label: '💼 Investments' },
   { to: '/advisor', label: '🤖 AI Advisor' },
+  { to: '/chat', label: '💬 AI Chat' },
   { to: '/agent', label: '🧠 Research Agent' },
   { to: '/multi-agent', label: '🤖 Multi-Agent Advisor' },
   { to: '/risk', label: '🛡️ Risk Assessment' },

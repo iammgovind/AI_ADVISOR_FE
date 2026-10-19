@@ -21,6 +21,8 @@ export interface SavingsPlan {
     target_date: string
     months_remaining: number
     monthly_required: number
+    months_left: number
+    monthly_saving_needed: number
     feasible: boolean
   }[]
   monthly_allocation: {

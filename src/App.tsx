@@ -9,6 +9,7 @@ import Budgets from './pages/Budgets'
 import Goals from './pages/Goals'
 import Investments from './pages/Investments'
 import Advisor from './pages/Advisor'
+import Chat from './pages/Chat'
 import Agent from './pages/Agent'
 import MultiAgent from './pages/MultiAgent'
 import Risk from './pages/Risk'
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/goals" element={<Goals />} />
           <Route path="/investments" element={<Investments />} />
           <Route path="/advisor" element={<Advisor />} />
+          <Route path="/chat" element={<Chat />} />
           <Route path="/agent" element={<Agent />} />
           <Route path="/multi-agent" element={<MultiAgent />} />
           <Route path="/risk" element={<Risk />} />

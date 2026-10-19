@@ -144,8 +144,8 @@ export default function Savings() {
                       <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Target: {g.target_date}</div>
                     </td>
                     <td>₹{g.remaining_amount.toLocaleString()}</td>
-                    <td>{g.months_remaining}</td>
-                    <td style={{ fontWeight: 600 }}>₹{g.monthly_required.toLocaleString(undefined, { maximumFractionDigits: 0 })}</td>
+                    <td>{g.months_left ?? g.months_remaining}</td>
+                    <td style={{ fontWeight: 600 }}>₹{(g.monthly_saving_needed ?? g.monthly_required).toLocaleString(undefined, { maximumFractionDigits: 0 })}</td>
                     <td>
                       <span className={`alert-badge ${g.feasible ? 'alert-ok' : 'alert-exceeded'}`}>
                         {g.feasible ? 'Yes' : 'No'}
