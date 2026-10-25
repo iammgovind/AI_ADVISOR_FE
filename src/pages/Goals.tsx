@@ -189,7 +189,7 @@ export default function Goals() {
                 <form onSubmit={handleDeposit}>
                   <div style={{ display: 'flex', alignItems: 'center', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, padding: '0 12px' }}>
                     <span style={{ color: 'var(--text)', fontSize: 16, marginRight: 4 }}>₹</span>
-                    <input placeholder="0.00" type="number" step="0.01" value={deposit} onChange={(e) => setDeposit(e.target.value)} required autoFocus style={{ border: 'none', background: 'transparent', outline: 'none', flex: 1, padding: '10px 0' }} />
+                    <input placeholder="0.00" type="text" inputMode="decimal" value={deposit} onChange={(e) => setDeposit(e.target.value.replace(/[^0-9.]/g, ''))} required autoFocus style={{ border: 'none', background: 'transparent', outline: 'none', flex: 1, padding: '10px 0' }} />
                   </div>
                   {error && <p className="error">{error}</p>}
                   <div className="modal-actions">
