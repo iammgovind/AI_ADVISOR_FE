@@ -150,7 +150,7 @@ export default function Expenses() {
                   <span className="expense-date">{new Date(e.expense_date).toLocaleDateString()}</span>
                 </div>
                 <div className="expense-right">
-                  <span className="expense-amount">₹{e.amount.toFixed(2)}</span>
+                  <span className="expense-amount">₹{Number(e.amount).toFixed(2)}</span>
                   <div className="expense-actions">
                     <button className="btn-icon" onClick={() => setEditing(e)}>✏️</button>
                     <button className="btn-icon btn-danger" onClick={() => handleDelete(e.id)}>🗑️</button>
@@ -250,7 +250,6 @@ export default function Expenses() {
                 <thead>
                   <tr>
                     <th>Date</th>
-                    <th>Description</th>
                     <th>Amount</th>
                     <th>Category</th>
                     <th>Reject</th>
@@ -260,11 +259,7 @@ export default function Expenses() {
                   {rows.map((r, i) => (
                     <tr key={r.row_index} className={r.rejected ? 'row-rejected' : r.confidence === 'low' ? 'row-low' : ''}>
                       <td>{new Date(r.date).toLocaleDateString()}</td>
-                      <td>
-                        {r.description}
-                        {r.confidence === 'low' && <span className="badge-low"> ⚠️ Review</span>}
-                      </td>
-                      <td>₹{r.amount.toFixed(2)}</td>
+                      <td>₹{Number(r.amount).toFixed(2)}{r.confidence === 'low' && <span className="badge-low"> ⚠️ Review</span>}</td>
                       <td>
                         <select
                           value={r.category}

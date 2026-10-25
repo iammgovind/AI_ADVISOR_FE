@@ -34,7 +34,10 @@ export default function ExpenseForm({ initial, onSave, onClose }: Props) {
         <h3>{initial?.id ? 'Edit Expense' : 'New Expense'}</h3>
         <form onSubmit={handleSubmit}>
           <input placeholder="Title" value={form.title} onChange={set('title')} required />
-          <input placeholder="Amount" type="number" step="0.01" value={form.amount} onChange={set('amount')} required />
+          <div style={{ position: 'relative' }}>
+            <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }}>₹</span>
+            <input placeholder="Amount" type="number" step="0.01" value={form.amount} onChange={set('amount')} required style={{ paddingLeft: 26 }} />
+          </div>
           <select value={form.category} onChange={set('category')}>
             {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
