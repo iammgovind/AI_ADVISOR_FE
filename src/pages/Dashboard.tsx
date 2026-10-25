@@ -58,7 +58,7 @@ export default function Dashboard() {
           <div className="stat-cards">
             <div className="stat-card">
               <span className="stat-label">Total Spent</span>
-              <span className="stat-value">${data.expense_summary.total_this_month.toFixed(2)}</span>
+              <span className="stat-value">₹{data.expense_summary.total_this_month.toFixed(2)}</span>
             </div>
             <div className="stat-card">
               <span className="stat-label">Transactions</span>
@@ -111,7 +111,7 @@ export default function Dashboard() {
                         <div className="progress-fill" style={{ width: `${Math.min(a.utilization_pct, 100)}%`, background: alertColor[a.alert] }} />
                       </div>
                       <span style={{ color: alertColor[a.alert], fontSize: 13, whiteSpace: 'nowrap' }}>
-                        {a.utilization_pct.toFixed(1)}% — ${a.spent.toFixed(2)} / ${a.limit_amount.toFixed(2)}
+                        {a.utilization_pct.toFixed(1)}% — ₹{a.spent.toFixed(2)} / ₹{a.limit_amount.toFixed(2)}
                       </span>
                     </div>
                   ))}
@@ -133,7 +133,7 @@ export default function Dashboard() {
                 </defs>
                 <XAxis dataKey="label" tick={{ fill: '#8892a4', fontSize: 12 }} />
                 <YAxis tick={{ fill: '#8892a4', fontSize: 12 }} />
-                <Tooltip formatter={(v) => `$${Number(v).toFixed(2)}`} contentStyle={{ background: '#1a1d27', border: '1px solid #2e3250' }} />
+                <Tooltip formatter={(v) => `₹${Number(v).toFixed(2)}`} contentStyle={{ background: '#1a1d27', border: '1px solid #2e3250' }} />
                 <Area type="monotone" dataKey="total" stroke="#6366f1" fill="url(#trendGrad)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
@@ -147,7 +147,7 @@ export default function Dashboard() {
                 <BarChart data={data.category_breakdown} margin={{ top: 10, right: 20, left: 0, bottom: 5 }}>
                   <XAxis dataKey="category" tick={{ fill: '#8892a4', fontSize: 12 }} />
                   <YAxis tick={{ fill: '#8892a4', fontSize: 12 }} />
-                  <Tooltip formatter={(v) => `$${Number(v).toFixed(2)}`} contentStyle={{ background: '#1a1d27', border: '1px solid #2e3250' }} />
+                  <Tooltip formatter={(v) => `₹${Number(v).toFixed(2)}`} contentStyle={{ background: '#1a1d27', border: '1px solid #2e3250' }} />
                   <Bar dataKey="total" radius={[4, 4, 0, 0]}>
                     {data.category_breakdown.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
                   </Bar>
@@ -163,7 +163,7 @@ export default function Dashboard() {
                     {data.category_breakdown.map((c) => (
                       <tr key={c.category}>
                         <td className="capitalize">{c.category}</td>
-                        <td>${c.total.toFixed(2)}</td>
+                        <td>₹{c.total.toFixed(2)}</td>
                         <td>{c.count}</td>
                       </tr>
                     ))}

@@ -98,12 +98,12 @@ export default function Budgets() {
               </div>
 
               <div className="budget-amounts">
-                <span>${s.spent.toFixed(2)} <span className="text-muted">spent</span></span>
-                <span className="text-muted">of ${s.limit_amount.toFixed(2)}</span>
+                <span>₹{s.spent.toFixed(2)} <span className="text-muted">spent</span></span>
+                <span className="text-muted">of ₹{s.limit_amount.toFixed(2)}</span>
                 <span style={{ marginLeft: 'auto', color }}>
                   {s.alert === 'exceeded'
-                    ? `$${(s.spent - s.limit_amount).toFixed(2)} over`
-                    : `$${s.remaining.toFixed(2)} left`}
+                    ? `₹${(s.spent - s.limit_amount).toFixed(2)} over`
+                    : `₹${s.remaining.toFixed(2)} left`}
                 </span>
               </div>
 

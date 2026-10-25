@@ -50,7 +50,7 @@ export default function Expenses() {
               <span className="expense-date">{new Date(e.expense_date).toLocaleDateString()}</span>
             </div>
             <div className="expense-right">
-              <span className="expense-amount">${e.amount.toFixed(2)}</span>
+              <span className="expense-amount">₹{e.amount.toFixed(2)}</span>
               <div className="expense-actions">
                 <button className="btn-icon" onClick={() => setEditing(e)}>✏️</button>
                 <button className="btn-icon btn-danger" onClick={() => handleDelete(e.id)}>🗑️</button>

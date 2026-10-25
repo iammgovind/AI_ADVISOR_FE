@@ -23,7 +23,7 @@ export default function Analytics() {
               <Pie data={data} dataKey="total" nameKey="category" cx="50%" cy="50%" outerRadius={100} label={({ name }) => name as string}>
                 {data.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
               </Pie>
-              <Tooltip formatter={(v) => `$${Number(v).toFixed(2)}`} />
+              <Tooltip formatter={(v) => `₹${Number(v).toFixed(2)}`} />
             </PieChart>
           </ResponsiveContainer>
         </div>
@@ -34,9 +34,9 @@ export default function Analytics() {
             <BarChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 5 }}>
               <XAxis dataKey="category" />
               <YAxis />
-              <Tooltip formatter={(v) => `$${Number(v).toFixed(2)}`} />
+              <Tooltip formatter={(v) => `₹${Number(v).toFixed(2)}`} />
               <Legend />
-              <Bar dataKey="total" name="Total ($)" radius={[4, 4, 0, 0]}>
+              <Bar dataKey="total" name="Total (₹)" radius={[4, 4, 0, 0]}>
                 {data.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
               </Bar>
             </BarChart>
@@ -51,9 +51,9 @@ export default function Analytics() {
             {data.map((d) => (
               <tr key={d.category}>
                 <td className="capitalize">{d.category}</td>
-                <td>${d.total.toFixed(2)}</td>
+                <td>₹{d.total.toFixed(2)}</td>
                 <td>{d.count}</td>
-                <td>${(d.total / d.count).toFixed(2)}</td>
+                <td>₹{(d.total / d.count).toFixed(2)}</td>
               </tr>
             ))}
           </tbody>

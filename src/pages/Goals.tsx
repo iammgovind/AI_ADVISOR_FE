@@ -156,8 +156,8 @@ export default function Goals() {
               </div>
 
               <div className="goal-amounts">
-                <span className="goal-saved">${g.saved_amount.toLocaleString()}</span>
-                <span className="text-muted"> / ${g.target_amount.toLocaleString()}</span>
+                <span className="goal-saved">₹{g.saved_amount.toLocaleString()}</span>
+                <span className="text-muted"> / ₹{g.target_amount.toLocaleString()}</span>
                 <span style={{ marginLeft: 'auto', color, fontWeight: 600 }}>{g.progress_pct.toFixed(1)}%</span>
               </div>
 
@@ -169,7 +169,7 @@ export default function Goals() {
                 {g.status === 'active' && (
                   <>
                     <span className="text-muted">🗓 {g.days_remaining}d left · Target {g.target_date}</span>
-                    <span className="text-muted">Need <strong style={{ color: 'var(--text)' }}>${g.monthly_savings_required.toLocaleString(undefined, { maximumFractionDigits: 2 })}</strong>/mo</span>
+                    <span className="text-muted">Need <strong style={{ color: 'var(--text)' }}>₹{g.monthly_savings_required.toLocaleString(undefined, { maximumFractionDigits: 2 })}</strong>/mo</span>
                   </>
                 )}
                 {g.status === 'completed' && <span style={{ color: 'var(--success)' }}>🎉 Goal completed!</span>}
