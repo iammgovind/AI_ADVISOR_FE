@@ -144,7 +144,7 @@ export default function Goals() {
                 <div className="expense-actions">
                   {g.status === 'active' && (
                     <>
-                      <button className="btn-icon" title="Deposit" onClick={() => openDeposit(g)}>₹</button>
+                      <button className="btn-icon" title="Deposit" onClick={() => openDeposit(g)} style={{ color: '#10b981', fontSize: 16, fontWeight: 700 }}>₹</button>
                       <button className="btn-icon" onClick={() => openEdit(g)}>✏️</button>
                       <button className="btn-icon btn-danger" title="Cancel goal" onClick={() => handleCancel(g.goal_id)}>✕</button>
                     </>
