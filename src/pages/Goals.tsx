@@ -187,7 +187,10 @@ export default function Goals() {
               <>
                 <h3>Deposit — {modal.goal?.title}</h3>
                 <form onSubmit={handleDeposit}>
-                  <input placeholder="Amount" type="number" step="0.01" value={deposit} onChange={(e) => setDeposit(e.target.value)} required autoFocus />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{ fontSize: 18, color: 'var(--text)' }}>₹</span>
+                    <input placeholder="Amount" type="number" step="0.01" value={deposit} onChange={(e) => setDeposit(e.target.value)} required autoFocus style={{ flex: 1 }} />
+                  </div>
                   {error && <p className="error">{error}</p>}
                   <div className="modal-actions">
                     <button type="button" className="btn-secondary" onClick={() => setModal(null)}>Cancel</button>
