@@ -48,3 +48,76 @@ export const getMonthlySummary = (year: number, month: number) =>
 
 export const getAnalytics = () =>
   api.get<AnalyticsItem[]>('/expenses/summary/analytics').then((r) => r.data)
+
+// --- Bank Accounts ---
+export interface BankAccount {
+  id: string
+  user_id: string
+  bank_name: string
+  account_number: string
+  account_holder: string
+  created_at: string
+}
+
+export const getBankAccounts = () =>
+  api.get<BankAccount[]>('/bank-accounts').then((r) => r.data)
+
+export const createBankAccount = (data: Pick<BankAccount, 'bank_name' | 'account_number' | 'account_holder'>) =>
+  api.post<BankAccount>('/bank-accounts', data).then((r) => r.data)
+
+export const deleteBankAccount = (id: string) =>
+  api.delete(`/bank-accounts/${id}`)
+
+// --- Statement Upload ---
+export interface StatementTransaction {
+  row_index: number
+  date: string
+  description: string
+  amount: number
+  suggested_category: Category
+  confidence: 'high' | 'low'
+}
+
+export interface UploadResponse {
+  upload_id: string
+  bank_name: string
+  account_number: string
+  account_holder: string
+  matched_account_id: string | null
+  account_verified: boolean
+  total_debits: number
+  transactions: StatementTransaction[]
+}
+
+export const uploadStatement = (file?: File, raw_text?: string) => {
+  const form = new FormData()
+  if (file) form.append('file', file)
+  if (raw_text) form.append('raw_text', raw_text)
+  return api.post<UploadResponse>('/expenses/statement/upload', form).then((r) => r.data)
+}
+
+export interface ApprovedRow {
+  row_index: number
+  date: string
+  description: string
+  amount: number
+  category: Category
+}
+
+export const bulkApprove = (upload_id: string, approved: ApprovedRow[], rejected_indices: number[]) =>
+  api.post<{ saved: number; rejected: number }>('/expenses/statement/bulk-approve', { upload_id, approved, rejected_indices }).then((r) => r.data)
+
+// --- Upload History ---
+export interface UploadHistory {
+  id: string
+  source: string
+  filename: string | null
+  total_transactions: number
+  approved_count: number
+  rejected_count: number
+  status: string
+  created_at: string
+}
+
+export const getStatementHistory = () =>
+  api.get<UploadHistory[]>('/expenses/statement/history').then((r) => r.data)

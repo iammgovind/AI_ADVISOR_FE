@@ -627,6 +627,33 @@ button:hover { background: var(--primary-hover); transform: translateY(-1px); bo
 }
 .ef-status { margin-top: 4px; }
 
+/* Bank Statement Import */
+.import-section { display: flex; flex-direction: column; gap: 16px; }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  padding: 20px 24px;
+}
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.card-header h3 { margin: 0; font-size: 16px; }
+.account-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+.account-item:last-child { border-bottom: none; }
+.form-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+.form-row input { flex: 1; min-width: 140px; }
+.statement-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+.statement-table th, .statement-table td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+.statement-table th { color: var(--text-muted); font-size: 12px; font-weight: 500; }
+.statement-table tr:hover td { background: var(--surface2); }
+.row-low td { background: rgba(245,158,11,0.08); }
+.row-rejected td { opacity: 0.4; text-decoration: line-through; }
+.badge-low { color: #f59e0b; font-size: 11px; margin-left: 4px; }
+.success { color: var(--success); font-size: 13px; margin-bottom: 10px; }
+.warning { color: var(--warning); font-size: 13px; margin-bottom: 10px; }
+.tab { background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 7px 14px; font-size: 13px; font-weight: 500; }
+.tab:hover { background: var(--surface2); color: var(--text); transform: none; box-shadow: none; }
+.tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
 @keyframes page-enter {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
