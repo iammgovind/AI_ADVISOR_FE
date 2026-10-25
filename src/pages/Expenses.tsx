@@ -242,7 +242,7 @@ export default function Expenses() {
               <div className="card-header"><h3>Preview Transactions</h3></div>
 
               {preview.account_verified
-                ? <p className="success">✅ Confirmed: {preview.bank_name} {preview.account_number}. Found {preview.total_debits} transactions.</p>
+                ? <p className="success">✅ Account verified. Found {preview.total_debits} transactions.</p>
                 : <p className="warning">⚠️ Account not matched. Do you want to continue?</p>
               }
 
