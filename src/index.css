@@ -105,6 +105,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: #f6fbf6;
   margin: 0 10px 38px;
   letter-spacing: -0.02em;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
 .sidebar-brand::after { content: 'personal finance, clarified'; display: block; color: #8fb4a8; font: 500 10px/1.2 var(--font-ui); letter-spacing: 0.11em; margin-top: 6px; text-transform: uppercase; }
