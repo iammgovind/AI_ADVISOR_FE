@@ -3,6 +3,7 @@ import { useAuthStore } from '../store/auth'
 import { logout as logoutRequest } from '../api/auth'
 import { useState, useEffect, useRef } from 'react'
 import { getNotifications, type Notification } from '../api/notifications'
+import { getMe, updateMe } from '../api/users'
 
 const alertColor: Record<string, string> = {
   exceeded: 'var(--danger)',
@@ -26,14 +27,57 @@ const links = [
 ]
 
 export default function Sidebar() {
-  const { user, logout: clearSession } = useAuthStore()
+  const { user, setUser, logout: clearSession } = useAuthStore()
   const navigate = useNavigate()
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [showNotif, setShowNotif] = useState(false)
   const bellRef = useRef<HTMLDivElement>(null)
+  const [editIncome, setEditIncome] = useState(false)
+  const [incomeVal, setIncomeVal] = useState('')
 
   useEffect(() => {
-    getNotifications().then(setNotifications).catch(() => {})
+    getMe().then((me) => {
+      setUser(me)
+      setIncomeVal(me.monthly_income ? String(me.monthly_income) : '')
+    }).catch(() => {})
+  }, [])
+
+  const handleSaveIncome = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const updated = await updateMe({ monthly_income: Number(incomeVal) })
+    setUser(updated)
+    setEditIncome(false)
+  }
+
+  const fetchNotifications = () =>
+    getNotifications()
+      .then((all) => {
+        const critical = all.filter((n) => n.alert === 'exceeded' || n.alert === 'warning')
+        setNotifications((prev) => {
+          const prevCount = prev.filter((n) => n.alert === 'exceeded' || n.alert === 'warning').length
+          if (critical.length > prevCount) {
+            const newest = critical[0]
+            const color = newest.alert === 'exceeded' ? '#e68260' : '#e8ae4a'
+            const toast = document.createElement('div')
+            toast.textContent = newest.message
+            Object.assign(toast.style, {
+              position: 'fixed', bottom: '24px', right: '24px', zIndex: '9999',
+              background: color, color: '#fff', padding: '12px 18px',
+              borderRadius: '10px', fontWeight: '600', fontSize: '14px',
+              boxShadow: '0 8px 24px #0005', animation: 'none',
+            })
+            document.body.appendChild(toast)
+            setTimeout(() => toast.remove(), 4000)
+          }
+          return all
+        })
+      })
+      .catch(() => {})
+
+  useEffect(() => {
+    fetchNotifications()
+    const interval = setInterval(fetchNotifications, 30000)
+    return () => clearInterval(interval)
   }, [])
 
   useEffect(() => {
@@ -104,6 +148,31 @@ export default function Sidebar() {
         )}
       </nav>
       <div className="sidebar-footer">
+        <div style={{ marginBottom: 10, fontSize: 12 }}>
+          {editIncome ? (
+            <form onSubmit={handleSaveIncome} style={{ display: 'flex', gap: 6 }}>
+              <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 7, padding: '0 8px', flex: 1 }}>
+                <span style={{ color: '#8fb4a8', fontSize: 13 }}>₹</span>
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  value={incomeVal}
+                  onChange={(e) => setIncomeVal(e.target.value.replace(/[^0-9.]/g, ''))}
+                  placeholder="Monthly income"
+                  autoFocus
+                  style={{ background: 'transparent', border: 'none', outline: 'none', color: '#f0f7f1', fontSize: 12, padding: '6px 4px', width: '100%' }}
+                />
+              </div>
+              <button type="submit" style={{ padding: '4px 10px', fontSize: 12, borderRadius: 7 }}>✓</button>
+              <button type="button" onClick={() => setEditIncome(false)} style={{ padding: '4px 8px', fontSize: 12, borderRadius: 7, background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', color: '#a9c3b8' }}>✕</button>
+            </form>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#8fb4a8' }}>
+              <span>Income: <strong style={{ color: '#f0f7f1' }}>{user?.monthly_income ? `₹${Number(user.monthly_income).toLocaleString()}` : 'Not set'}</strong></span>
+              <button onClick={() => setEditIncome(true)} style={{ background: 'transparent', border: 'none', color: '#8fb4a8', fontSize: 12, padding: '2px 6px', cursor: 'pointer' }}>✏️</button>
+            </div>
+          )}
+        </div>
         <div className="account-row">
           <span className="account-avatar" aria-hidden="true">{initials}</span>
           <div className="account-details">

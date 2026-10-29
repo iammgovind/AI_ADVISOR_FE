@@ -6,6 +6,7 @@ export interface User {
   full_name: string
   role: 'user' | 'admin'
   is_active: boolean
+  monthly_income: number | null
   created_at: string
   updated_at: string
 }
@@ -15,6 +16,11 @@ export interface CreateUserInput {
   password: string
   full_name: string
 }
+
+export const getMe = () => api.get<User>('/users/me').then((r) => r.data)
+
+export const updateMe = (data: Partial<Pick<User, 'full_name' | 'monthly_income'>>) =>
+  api.patch<User>('/users/me', data).then((r) => r.data)
 
 export const getUsers = () => api.get<User[]>('/users').then((r) => r.data)
 
