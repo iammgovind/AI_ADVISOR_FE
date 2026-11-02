@@ -152,6 +152,13 @@ export default function Savings() {
                       </span>
                     </td>
                   </tr>
+                  {!g.feasible && g.suggestion?.message && (
+                    <tr>
+                      <td colSpan={5} style={{ fontSize: 12, color: '#f59e0b', paddingTop: 0, paddingBottom: 8 }}>
+                        💡 {g.suggestion.message}
+                      </td>
+                    </tr>
+                  )}
                 ))}
               </tbody>
             </table>

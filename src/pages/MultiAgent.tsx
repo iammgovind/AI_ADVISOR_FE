@@ -113,6 +113,11 @@ export default function MultiAgent() {
           <div style={{ fontSize: 12 }}>
             Allocation → Goals: ₹{agents.savings.monthly_allocation.goals} · EF: ₹{agents.savings.monthly_allocation.emergency_fund} · Surplus: ₹{agents.savings.monthly_allocation.investable_surplus}
           </div>
+          {agents.savings.goal_plans.filter(g => !g.feasible && g.suggestion?.message).map(g => (
+            <div key={g.goal_id} style={{ fontSize: 12, color: '#f59e0b', marginTop: 6 }}>
+              💡 <strong>{g.title}:</strong> {g.suggestion!.message}
+            </div>
+          ))}
         </div>
 
         {/* Investment */}

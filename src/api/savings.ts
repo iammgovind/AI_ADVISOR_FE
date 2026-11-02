@@ -24,6 +24,8 @@ export interface SavingsPlan {
     months_left: number
     monthly_saving_needed: number
     feasible: boolean
+    status?: string
+    suggestion?: { message: string; realistic_date?: string; optimistic_date?: string }
   }[]
   monthly_allocation: {
     goals: number

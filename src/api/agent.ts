@@ -59,7 +59,7 @@ export interface MultiAgentReport {
       savings_rate_pct: number
       emergency_fund: { target: number; status: string }
       monthly_allocation: { goals: number; emergency_fund: number; investable_surplus: number }
-      goal_plans: { goal_id: string; title: string; monthly_required: number; feasible: boolean }[]
+      goal_plans: { goal_id: string; title: string; monthly_required: number; feasible: boolean; status?: string; suggestion?: { message: string; realistic_date?: string; optimistic_date?: string } }[]
     }
     budget: { utilization_pct: number; status: string; alert: string }
     investment: {

@@ -141,11 +141,11 @@ export default function Sidebar() {
             {l.label}
           </NavLink>
         ))}
-        {user?.role === 'admin' && (
+        {/* user?.role === 'admin' && (
           <NavLink to="/users" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
             👥 Users
           </NavLink>
-        )}
+        ) */}
       </nav>
       <div className="sidebar-footer">
         <div style={{ marginBottom: 10, fontSize: 12 }}>

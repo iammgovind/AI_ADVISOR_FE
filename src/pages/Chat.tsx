@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { sendMessage, getChatHistory, clearChatHistory, type ChatMessage } from '../api/chat'
+import { smartSend, getChatHistory, clearChatHistory, type ChatMessage } from '../api/chat'
 
 export default function Chat() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
@@ -25,7 +25,7 @@ export default function Chat() {
     setMessages((m) => [...m, { role: 'user', content: message }])
     setLoading(true)
     try {
-      const res = await sendMessage(message)
+      const res = await smartSend(message)
       setMessages((m) => [...m, { role: 'assistant', content: res.reply }])
     } catch {
       setMessages((m) => [...m, { role: 'assistant', content: 'Sorry, something went wrong. Please try again.' }])
@@ -55,7 +55,7 @@ export default function Chat() {
         <div className="chat-messages">
           {messages.length === 0 && !loading && (
             <div className="chat-bubble assistant">
-              <div className="bubble-text">Hello! I'm your AI financial assistant with memory. Ask me anything!</div>
+              <div className="bubble-text">Hello! I'm your unified AI financial assistant. Ask about your risk profile, investments, financial health, savings, or anything else!</div>
             </div>
           )}
           {messages.map((m, i) => (
@@ -73,7 +73,7 @@ export default function Chat() {
 
         <form className="chat-input-row" onSubmit={handleSend}>
           <input
-            placeholder="Ask me anything about your finances..."
+            placeholder="Ask about risk, investments, health score, savings..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={loading}
