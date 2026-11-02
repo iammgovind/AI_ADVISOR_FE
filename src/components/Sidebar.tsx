@@ -17,10 +17,10 @@ const links = [
   { to: '/budgets', label: '🎯 Budgets' },
   { to: '/goals', label: '🏆 Goals' },
   { to: '/investments', label: '💼 Investments' },
-  { to: '/advisor', label: '🤖 AI Advisor' },
+  // { to: '/advisor', label: '🤖 AI Advisor' },        // hidden: unified into /chat
   { to: '/chat', label: '💬 AI Chat' },
-  { to: '/agent', label: '🧠 Research Agent' },
-  { to: '/multi-agent', label: '🤖 Multi-Agent Advisor' },
+  // { to: '/agent', label: '🧠 Research Agent' },      // hidden: unified into /chat
+  // { to: '/multi-agent', label: '🤖 Multi-Agent Advisor' }, // hidden: unified into /chat
   { to: '/risk', label: '🛡️ Risk Assessment' },
   { to: '/savings', label: '💰 Savings Plan' },
   { to: '/analytics', label: '📈 Analytics' },
