@@ -23,7 +23,6 @@ const links = [
   // { to: '/multi-agent', label: '🤖 Multi-Agent Advisor' }, // hidden: unified into /chat
   { to: '/risk', label: '🛡️ Risk Assessment' },
   { to: '/savings', label: '💰 Savings Plan' },
-  { to: '/sip', label: '💹 SIP' },
   { to: '/analytics', label: '📈 Analytics' },
 ]
 
