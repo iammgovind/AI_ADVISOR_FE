@@ -55,9 +55,11 @@ export default function Risk() {
 
       {/* Warnings */}
       {data.warnings.length > 0 && (
-        <div className="risk-warnings">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
           {data.warnings.map((w, i) => (
-            <div key={i} className="risk-warning-row">⚠️ {w}</div>
+            <div key={i} style={{ background: '#f97316', borderRadius: 8, padding: '10px 14px', color: '#000', fontWeight: 600, fontSize: 13 }}>
+              ⚠️ {w}
+            </div>
           ))}
         </div>
       )}

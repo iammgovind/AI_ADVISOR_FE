@@ -21,7 +21,7 @@ const links = [
   { to: '/chat', label: '💬 AI Chat' },
   // { to: '/agent', label: '🧠 Research Agent' },      // hidden: unified into /chat
   // { to: '/multi-agent', label: '🤖 Multi-Agent Advisor' }, // hidden: unified into /chat
-  // { to: '/risk', label: '🛡️ Risk Assessment' },   // hidden: unified into /chat
+  { to: '/risk', label: '🛡️ Risk Assessment' },
   { to: '/savings', label: '💰 Savings Plan' },
   { to: '/analytics', label: '📈 Analytics' },
 ]
@@ -108,10 +108,11 @@ export default function Sidebar() {
     <aside className="sidebar">
       <div className="sidebar-brand">
         FinanceAI
-        <div ref={bellRef} style={{ position: 'relative', marginLeft: 'auto' }}>
+      </div>
+      <div ref={bellRef} style={{ position: 'fixed', top: 20, right: 28, zIndex: 1000 }}>
           <button
             onClick={() => setShowNotif((v) => !v)}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 18, position: 'relative', padding: 0 }}
+            style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '50%', width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 18, position: 'relative', padding: 0, boxShadow: '0 0 0 4px rgba(255,255,255,0.06), 0 0 16px 4px rgba(99,102,241,0.35)' }}
             title="Notifications"
           >
             🔔
@@ -122,7 +123,7 @@ export default function Sidebar() {
             )}
           </button>
           {showNotif && (
-            <div style={{ position: 'absolute', left: 0, top: '110%', width: 300, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, zIndex: 999, boxShadow: '0 8px 32px #0006', maxHeight: 400, overflowY: 'auto' }}>
+            <div style={{ position: 'absolute', right: 0, top: '110%', width: 300, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, zIndex: 999, boxShadow: '0 8px 32px #0006', maxHeight: 400, overflowY: 'auto' }}>
               <div style={{ padding: '10px 14px', fontWeight: 600, borderBottom: '1px solid var(--border)', fontSize: 13 }}>Notifications</div>
               {notifications.length === 0 && <p style={{ padding: 14, color: 'var(--text-muted)', fontSize: 13 }}>All clear!</p>}
               {notifications.map((n, i) => (
@@ -134,7 +135,6 @@ export default function Sidebar() {
             </div>
           )}
         </div>
-      </div>
       <nav>
         {links.map((l) => (
           <NavLink key={l.to} to={l.to} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>

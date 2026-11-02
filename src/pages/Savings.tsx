@@ -54,10 +54,15 @@ export default function Savings() {
 
       {/* Recommendations */}
       {data.recommendations.length > 0 && (
-        <div className="risk-warnings" style={{ marginBottom: 24 }}>
-          {data.recommendations.map((r, i) => (
-            <div key={i} className="savings-rec-row">{r}</div>
-          ))}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
+          {data.recommendations.map((r, i) => {
+            const bg = r.startsWith('✅') ? '#22c55e' : r.startsWith('⚠️') ? '#f97316' : '#3b82f6'
+            return (
+              <div key={i} style={{ background: bg, borderRadius: 8, padding: '10px 14px', color: '#000', fontWeight: 600, fontSize: 13 }}>
+                {r}
+              </div>
+            )
+          })}
         </div>
       )}
 
