@@ -21,7 +21,7 @@ const links = [
   { to: '/chat', label: '💬 AI Chat' },
   // { to: '/agent', label: '🧠 Research Agent' },      // hidden: unified into /chat
   // { to: '/multi-agent', label: '🤖 Multi-Agent Advisor' }, // hidden: unified into /chat
-  { to: '/risk', label: '🛡️ Risk Assessment' },
+  // { to: '/risk', label: '🛡️ Risk Assessment' },   // hidden: unified into /chat
   { to: '/savings', label: '💰 Savings Plan' },
   { to: '/analytics', label: '📈 Analytics' },
 ]
