@@ -112,7 +112,7 @@ export default function Sidebar() {
       <div ref={bellRef} style={{ position: 'fixed', top: 20, right: 28, zIndex: 1000 }}>
           <button
             onClick={() => setShowNotif((v) => !v)}
-            style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '50%', width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 18, position: 'relative', padding: 0, boxShadow: '0 0 0 4px rgba(255,255,255,0.06), 0 0 16px 4px rgba(99,102,241,0.35)' }}
+            style={{ background: '#d4e8d7', border: 'none', borderRadius: '50%', width: 38, height: 38, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 18, position: 'relative', padding: 0, boxShadow: '0 2px 10px rgba(0,0,0,0.2)' }}
             title="Notifications"
           >
             🔔
