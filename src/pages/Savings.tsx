@@ -155,8 +155,10 @@ export default function Savings() {
                     </tr>
                     {!g.feasible && g.suggestion?.message && (
                       <tr>
-                        <td colSpan={5} style={{ fontSize: 12, color: '#f59e0b', paddingTop: 0, paddingBottom: 8 }}>
-                          💡 {g.suggestion.message}
+                        <td colSpan={5} style={{ fontSize: 12, paddingTop: 0, paddingBottom: 8 }}>
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#fbbf24', border: '1px solid #f59e0b', borderRadius: 6, padding: '4px 10px', color: '#000', fontWeight: 600 }}>
+                            💡 {g.suggestion.message}
+                          </span>
                         </td>
                       </tr>
                     )}
