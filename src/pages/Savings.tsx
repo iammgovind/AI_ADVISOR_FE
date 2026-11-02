@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getSavingsPlan, type SavingsPlan } from '../api/savings'
 
 export default function Savings() {
@@ -138,27 +138,29 @@ export default function Savings() {
               </thead>
               <tbody>
                 {data.goal_plans.map((g) => (
-                  <tr key={g.goal_id}>
-                    <td>
-                      <div style={{ fontWeight: 600 }}>{g.title}</div>
-                      <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Target: {g.target_date}</div>
-                    </td>
-                    <td>₹{g.remaining_amount.toLocaleString()}</td>
-                    <td>{g.months_left ?? g.months_remaining}</td>
-                    <td style={{ fontWeight: 600 }}>₹{(g.monthly_saving_needed ?? g.monthly_required).toLocaleString(undefined, { maximumFractionDigits: 0 })}</td>
-                    <td>
-                      <span className={`alert-badge ${g.feasible ? 'alert-ok' : 'alert-exceeded'}`}>
-                        {g.feasible ? 'Yes' : 'No'}
-                      </span>
-                    </td>
-                  </tr>
-                  {!g.feasible && g.suggestion?.message && (
+                  <React.Fragment key={g.goal_id}>
                     <tr>
-                      <td colSpan={5} style={{ fontSize: 12, color: '#f59e0b', paddingTop: 0, paddingBottom: 8 }}>
-                        💡 {g.suggestion.message}
+                      <td>
+                        <div style={{ fontWeight: 600 }}>{g.title}</div>
+                        <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Target: {g.target_date}</div>
+                      </td>
+                      <td>₹{g.remaining_amount.toLocaleString()}</td>
+                      <td>{g.months_left ?? g.months_remaining}</td>
+                      <td style={{ fontWeight: 600 }}>₹{(g.monthly_saving_needed ?? g.monthly_required).toLocaleString(undefined, { maximumFractionDigits: 0 })}</td>
+                      <td>
+                        <span className={`alert-badge ${g.feasible ? 'alert-ok' : 'alert-exceeded'}`}>
+                          {g.feasible ? 'Yes' : 'No'}
+                        </span>
                       </td>
                     </tr>
-                  )}
+                    {!g.feasible && g.suggestion?.message && (
+                      <tr>
+                        <td colSpan={5} style={{ fontSize: 12, color: '#f59e0b', paddingTop: 0, paddingBottom: 8 }}>
+                          💡 {g.suggestion.message}
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
                 ))}
               </tbody>
             </table>
