@@ -14,6 +14,7 @@ import Agent from './pages/Agent'
 import MultiAgent from './pages/MultiAgent'
 import Risk from './pages/Risk'
 import Savings from './pages/Savings'
+import SIP from './pages/SIP'
 import Users from './pages/Users'
 
 export default function App() {
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="/multi-agent" element={<MultiAgent />} />
           <Route path="/risk" element={<Risk />} />
           <Route path="/savings" element={<Savings />} />
+          <Route path="/sip" element={<SIP />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/users" element={<Users />} />
         </Route>

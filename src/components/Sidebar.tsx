@@ -23,6 +23,7 @@ const links = [
   // { to: '/multi-agent', label: '🤖 Multi-Agent Advisor' }, // hidden: unified into /chat
   { to: '/risk', label: '🛡️ Risk Assessment' },
   { to: '/savings', label: '💰 Savings Plan' },
+  { to: '/sip', label: '💹 SIP' },
   { to: '/analytics', label: '📈 Analytics' },
 ]
 
@@ -30,8 +31,25 @@ export default function Sidebar() {
   const { user, setUser, logout: clearSession } = useAuthStore()
   const navigate = useNavigate()
   const [notifications, setNotifications] = useState<Notification[]>([])
+  const [readKeys, setReadKeys] = useState<Set<string>>(() => new Set(JSON.parse(localStorage.getItem('notif_read') ?? '[]')))
   const [showNotif, setShowNotif] = useState(false)
   const bellRef = useRef<HTMLDivElement>(null)
+
+  const notifKey = (n: Notification) => `${n.type}:${n.message}`
+  const unreadCount = notifications.filter(n => !readKeys.has(notifKey(n))).length
+
+  const markAllRead = () => {
+    const keys = notifications.map(notifKey)
+    const next = new Set([...readKeys, ...keys])
+    setReadKeys(next)
+    localStorage.setItem('notif_read', JSON.stringify([...next]))
+  }
+
+  const markOneRead = (n: Notification) => {
+    const next = new Set([...readKeys, notifKey(n)])
+    setReadKeys(next)
+    localStorage.setItem('notif_read', JSON.stringify([...next]))
+  }
   const [editIncome, setEditIncome] = useState(false)
   const [incomeVal, setIncomeVal] = useState('')
 
@@ -116,22 +134,28 @@ export default function Sidebar() {
             title="Notifications"
           >
             🔔
-            {notifications.length > 0 && (
+            {unreadCount > 0 && (
               <span style={{ position: 'absolute', top: -4, right: -4, background: 'var(--danger)', color: '#fff', borderRadius: '50%', fontSize: 10, width: 16, height: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>
-                {notifications.length}
+                {unreadCount}
               </span>
             )}
           </button>
           {showNotif && (
             <div style={{ position: 'absolute', right: 0, top: '110%', width: 300, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, zIndex: 999, boxShadow: '0 8px 32px #0006', maxHeight: 400, overflowY: 'auto' }}>
-              <div style={{ padding: '10px 14px', fontWeight: 600, borderBottom: '1px solid var(--border)', fontSize: 13 }}>Notifications</div>
+              <div style={{ padding: '10px 14px', fontWeight: 600, borderBottom: '1px solid var(--border)', fontSize: 13, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span>Notifications</span>
+                {unreadCount > 0 && <button onClick={(e) => { e.stopPropagation(); markAllRead() }} style={{ fontSize: 11, padding: '2px 8px', borderRadius: 6, background: 'transparent', border: '1px solid var(--border)', color: 'var(--text-muted)', cursor: 'pointer' }}>Mark all read</button>}
+              </div>
               {notifications.length === 0 && <p style={{ padding: 14, color: 'var(--text-muted)', fontSize: 13 }}>All clear!</p>}
-              {notifications.map((n, i) => (
-                <div key={i} style={{ padding: '10px 14px', borderBottom: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: 2 }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: alertColor[n.alert] }}>{n.message}</span>
-                  <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{n.detail}</span>
-                </div>
-              ))}
+              {notifications.map((n, i) => {
+                const isRead = readKeys.has(notifKey(n))
+                return (
+                  <div key={i} onClick={() => markOneRead(n)} style={{ padding: '10px 14px', borderBottom: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: 2, opacity: isRead ? 0.45 : 1, cursor: 'pointer', background: isRead ? 'transparent' : 'rgba(255,255,255,0.03)' }}>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: alertColor[n.alert] }}>{n.message}</span>
+                    <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{n.detail}</span>
+                  </div>
+                )
+              })}
             </div>
           )}
         </div>
