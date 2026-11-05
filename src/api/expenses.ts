@@ -105,7 +105,7 @@ export interface ApprovedRow {
 }
 
 export const bulkApprove = (upload_id: string, approved: ApprovedRow[], rejected_indices: number[]) =>
-  api.post<{ saved: number; rejected: number }>('/expenses/statement/bulk-approve', { upload_id, approved, rejected_indices }).then((r) => r.data)
+  api.post<{ saved: number; rejected: number; skipped_duplicates?: number }>('/expenses/statement/bulk-approve', { upload_id, approved, rejected_indices }).then((r) => r.data)
 
 // --- Upload History ---
 export interface UploadHistory {

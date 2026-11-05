@@ -52,7 +52,7 @@ export default function Expenses() {
   const [rows, setRows] = useState<(StatementTransaction & { category: Category; rejected: boolean })[]>([])
 
   const [approving, setApproving] = useState(false)
-  const [approveResult, setApproveResult] = useState<{ saved: number; rejected: number } | null>(null)
+  const [approveResult, setApproveResult] = useState<{ saved: number; rejected: number; skipped_duplicates?: number } | null>(null)
 
   const loadAccounts = () => getBankAccounts().then(setAccounts)
   useEffect(() => { if (tab === 'import') loadAccounts() }, [tab])
@@ -106,8 +106,13 @@ export default function Expenses() {
       setApproveResult(res)
       setPreview(null)
       loadExpenses()
-    } catch {
-      setUploadError('Failed to save transactions.')
+    } catch (e: any) {
+      if (e?.response?.status === 409) {
+        setUploadError(e.response.data?.detail ?? 'All transactions already exist.')
+        setPreview(null)
+      } else {
+        setUploadError('Failed to save transactions.')
+      }
     } finally {
       setApproving(false)
     }
@@ -231,7 +236,10 @@ export default function Expenses() {
           {/* Approve result */}
           {approveResult && (
             <div className="card">
-              <p className="success">✅ Saved {approveResult.saved} transactions. Rejected {approveResult.rejected}.</p>
+              <p className="success">
+                ✅ Saved {approveResult.saved} transactions. Rejected {approveResult.rejected}.
+                {!!approveResult.skipped_duplicates && ` ${approveResult.skipped_duplicates} skipped (already imported).`}
+              </p>
               <button onClick={() => { setApproveResult(null); setFile(null); setRawText('') }}>Import Another</button>
             </div>
           )}
