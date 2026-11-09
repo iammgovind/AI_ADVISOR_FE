@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { smartSend, getChatHistory, clearChatHistory, type ChatMessage } from '../api/chat'
 
 export default function Chat() {
@@ -60,7 +62,9 @@ export default function Chat() {
           )}
           {messages.map((m, i) => (
             <div key={i} className={`chat-bubble ${m.role}`}>
-              <div className="bubble-text">{m.content}</div>
+              <div className="bubble-text markdown-body">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{m.content}</ReactMarkdown>
+              </div>
             </div>
           ))}
           {loading && (
