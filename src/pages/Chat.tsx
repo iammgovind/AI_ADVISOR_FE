@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { smartSend, getChatHistory, clearChatHistory, type ChatMessage } from '../api/chat'
@@ -7,6 +8,7 @@ export default function Chat() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
+  const [confirmOpen, setConfirmOpen] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export default function Chat() {
   }
 
   const handleClear = async () => {
-    if (!confirm('Clear all chat history?')) return
+    setConfirmOpen(false)
     await clearChatHistory()
     setMessages([])
   }
@@ -47,7 +49,7 @@ export default function Chat() {
       <div className="page-header">
         <h2>💬 AI Chat</h2>
         {messages.length > 0 && (
-          <button className="btn-secondary" onClick={handleClear} style={{ fontSize: 13, padding: '6px 14px' }}>
+          <button className="btn-secondary" onClick={() => setConfirmOpen(true)} style={{ fontSize: 13, padding: '6px 14px' }}>
             Clear History
           </button>
         )}
@@ -86,6 +88,22 @@ export default function Chat() {
           <button type="submit" disabled={loading || !input.trim()}>Send</button>
         </form>
       </div>
+
+      {confirmOpen && createPortal(
+        <div className="modal-overlay" onClick={() => setConfirmOpen(false)}>
+          <div className="modal" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
+            <h3>Clear chat history?</h3>
+            <p style={{ color: 'var(--text-muted)', marginBottom: 18 }}>
+              This will permanently delete all your chat messages.
+            </p>
+            <div className="modal-actions">
+              <button type="button" className="btn-secondary" onClick={() => setConfirmOpen(false)}>Cancel</button>
+              <button type="button" onClick={handleClear}>Clear</button>
+            </div>
+          </div>
+        </div>,
+        document.body,
+      )}
     </div>
   )
 }
