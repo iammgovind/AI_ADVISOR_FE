@@ -15,6 +15,7 @@ import MultiAgent from './pages/MultiAgent'
 import Risk from './pages/Risk'
 import Savings from './pages/Savings'
 import Users from './pages/Users'
+import Profile from './pages/Profile'
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="/savings" element={<Savings />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import {
   getExpenses, createExpense, updateExpense, deleteExpense, type Expense,
   getBankAccounts, createBankAccount, deleteBankAccount, type BankAccount,
@@ -52,6 +53,7 @@ export default function Expenses() {
   const [rows, setRows] = useState<(StatementTransaction & { category: Category; rejected: boolean })[]>([])
 
   const [approving, setApproving] = useState(false)
+  const [duplicatePrompt, setDuplicatePrompt] = useState(false)
   const [approveResult, setApproveResult] = useState<{ saved: number; rejected: number; skipped_duplicates?: number } | null>(null)
 
   const loadAccounts = () => getBankAccounts().then(setAccounts)
@@ -94,7 +96,7 @@ export default function Expenses() {
     }
   }
 
-  const handleApprove = async () => {
+  const handleApprove = async (duplicateMode: 'check' | 'allow' | 'skip' = 'check') => {
     if (!preview) return
     setApproving(true)
     const approved: ApprovedRow[] = rows
@@ -102,13 +104,19 @@ export default function Expenses() {
       .map((r) => ({ row_index: r.row_index, date: r.date, description: r.description, amount: r.amount, category: r.category }))
     const rejected_indices = rows.filter((r) => r.rejected).map((r) => r.row_index)
     try {
-      const res = await bulkApprove(preview.upload_id, approved, rejected_indices)
+      const res = await bulkApprove(preview.upload_id, approved, rejected_indices, duplicateMode)
       setApproveResult(res)
       setPreview(null)
       loadExpenses()
     } catch (e: any) {
+      const detail = e?.response?.data?.detail
+      if (duplicateMode === 'check' && e?.response?.status === 409 && detail?.code === 'duplicate_expenses') {
+        setDuplicatePrompt(true)
+        return
+      }
+
       if (e?.response?.status === 409) {
-        setUploadError(e.response.data?.detail ?? 'All transactions already exist.')
+        setUploadError(typeof detail === 'string' ? detail : 'All transactions already exist.')
         setPreview(null)
       } else {
         setUploadError('Failed to save transactions.')
@@ -116,6 +124,11 @@ export default function Expenses() {
     } finally {
       setApproving(false)
     }
+  }
+
+  const handleDuplicateChoice = (duplicateMode: 'allow' | 'skip') => {
+    setDuplicatePrompt(false)
+    void handleApprove(duplicateMode)
   }
 
   // --- history tab ---
@@ -151,7 +164,15 @@ export default function Expenses() {
                 <div className="expense-info">
                   <span className="expense-title">{e.title}</span>
                   <span className={`badge badge-${e.category}`}>{e.category}</span>
-                  {e.note && <span className="expense-note">{e.note}</span>}
+                  {e.note && (
+                    <span className="expense-note">
+                      {e.note.split(/(\(duplicate\))/i).map((part, index) =>
+                        part.toLowerCase() === '(duplicate)'
+                          ? <span key={index} className="duplicate-marker">{part}</span>
+                          : part,
+                      )}
+                    </span>
+                  )}
                   <span className="expense-date">{new Date(e.expense_date).toLocaleDateString()}</span>
                 </div>
                 <div className="expense-right">
@@ -290,7 +311,7 @@ export default function Expenses() {
               </table>
 
               <div style={{ marginTop: 12, display: 'flex', gap: 8 }}>
-                <button onClick={handleApprove} disabled={approving}>
+                <button onClick={() => handleApprove()} disabled={approving}>
                   {approving ? 'Saving...' : `Confirm Import (${rows.filter((r) => !r.rejected).length} approved)`}
                 </button>
                 <button onClick={() => setPreview(null)}>Cancel</button>
@@ -325,6 +346,33 @@ export default function Expenses() {
             </tbody>
           </table>
         </div>
+      )}
+      {duplicatePrompt && createPortal(
+        <div className="modal-overlay">
+          <div
+            className="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="duplicate-expenses-title"
+            aria-describedby="duplicate-expenses-description"
+            aria-busy={approving}
+          >
+            <h3 id="duplicate-expenses-title">Possible duplicates found</h3>
+            <p id="duplicate-expenses-description" style={{ color: 'var(--text-muted)', marginBottom: 18 }}>
+              Some statement expenses may already be imported. Choose whether to keep them or skip them.
+              Allowed duplicates will be marked in the expense note.
+            </p>
+            <div className="modal-actions">
+              <button type="button" className="btn-secondary" disabled={approving} onClick={() => handleDuplicateChoice('skip')}>
+                Skip duplicates
+              </button>
+              <button type="button" disabled={approving} onClick={() => handleDuplicateChoice('allow')}>
+                {approving ? 'Saving...' : 'Allow duplicates'}
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body,
       )}
     </div>
   )

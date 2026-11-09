@@ -197,11 +197,13 @@ export default function Sidebar() {
           )}
         </div>
         <div className="account-row">
-          <span className="account-avatar" aria-hidden="true">{initials}</span>
-          <div className="account-details">
-            <span className="user-name">{user?.full_name}</span>
-            <span className="user-role">{user?.role}</span>
-          </div>
+          <NavLink to="/profile" title="My Profile" style={{ display: 'flex', alignItems: 'center', gap: 9, minWidth: 0, flex: 1, textDecoration: 'none', color: 'inherit' }}>
+            <span className="account-avatar" aria-hidden="true">{initials}</span>
+            <div className="account-details">
+              <span className="user-name">{user?.full_name}</span>
+              <span className="user-role">My Profile</span>
+            </div>
+          </NavLink>
           <button onClick={handleLogout} className="logout-btn" title="Log out" aria-label="Log out">↗</button>
         </div>
       </div>

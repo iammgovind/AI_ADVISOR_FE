@@ -104,8 +104,15 @@ export interface ApprovedRow {
   category: Category
 }
 
-export const bulkApprove = (upload_id: string, approved: ApprovedRow[], rejected_indices: number[]) =>
-  api.post<{ saved: number; rejected: number; skipped_duplicates?: number }>('/expenses/statement/bulk-approve', { upload_id, approved, rejected_indices }).then((r) => r.data)
+export type DuplicateMode = 'check' | 'allow' | 'skip'
+
+export const bulkApprove = (upload_id: string, approved: ApprovedRow[], rejected_indices: number[], duplicate_mode?: DuplicateMode) =>
+  api.post<{ saved: number; rejected: number; skipped_duplicates?: number }>('/expenses/statement/bulk-approve', {
+    upload_id,
+    approved,
+    rejected_indices,
+    ...(duplicate_mode ? { duplicate_mode } : {}),
+  }).then((r) => r.data)
 
 // --- Upload History ---
 export interface UploadHistory {
